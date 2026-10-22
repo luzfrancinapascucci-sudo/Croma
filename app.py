@@ -7,47 +7,67 @@ st.set_page_config(
     layout="centered"
 )
 
+# DISEÑO: BEIGE, DORADO Y LETRAS NEGRAS
 st.markdown("""
 <style>
 .stApp {
     background-color: #F7F0E8;
+    color: #000000;
 }
-h1 {
-    color: #80634F;
-    text-align: center;
+
+.stApp p,
+.stApp label,
+.stApp span,
+.stApp li,
+.stApp small,
+[data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stWidgetLabel"] p,
+[data-testid="stCaptionContainer"] {
+    color: #000000 !important;
 }
-h2, h3 {
-    color: #80634F;
+
+h1, h2, h3, h4, h5, h6 {
+    color: #000000 !important;
 }
+
 .stButton > button {
     background-color: #C5A46D;
-    color: white;
+    color: #000000 !important;
     border-radius: 10px;
-    border: none;
+    border: 1px solid #80634F;
+}
+
+[data-testid="stAlert"] p {
+    color: #000000 !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
+# ENCABEZADO
 st.title("CHROMA ✨")
-st.subheader("Your outfit, your colors")
+st.subheader("Tus colores, tu estilo")
 
 st.write(
     "Descubrí qué colores de sombras combinan "
-    "con tu outfit y tu estilo."
+    "con tu ropa y tu estilo de maquillaje."
 )
 
 st.markdown("---")
 
+# CARGA DE FOTO
 foto = st.file_uploader(
-    "📸 Subí una foto de tu outfit",
+    "📸 Subí una foto de tu conjunto de ropa",
     type=["jpg", "jpeg", "png"]
 )
 
+# ELECCIÓN DEL ESTILO
 estilo = st.selectbox(
     "💄 Elegí tu estilo de maquillaje",
     ["Natural", "Brillante", "Intenso"]
 )
 
+# PALETAS DE SOMBRAS
 paletas = {
     "Blanco": [
         ("Champagne", "#F3E1A9"),
@@ -93,26 +113,29 @@ paletas = {
     ]
 }
 
+# RESULTADOS
 if foto is not None:
     st.image(
         foto,
-        caption="Tu outfit",
+        caption="Tu conjunto de ropa",
         use_container_width=True
     )
 
+    st.markdown("### 🎨 Personalizá tu paleta")
+
     color = st.selectbox(
-        "🎨 ¿Cuál es el color principal de tu ropa?",
+        "¿Cuál es el color principal de tu ropa?",
         list(paletas.keys())
     )
 
-    st.markdown("## ✨ Tu paleta CHROMA")
+    st.markdown("## ✨ Tu paleta de sombras CHROMA")
     st.write(f"**Estilo elegido:** {estilo}")
+    st.write(f"**Color de tu ropa:** {color}")
 
+    sombras = paletas[color]
     columnas = st.columns(4)
 
-    for columna, (nombre, codigo) in zip(
-        columnas, paletas[color]
-    ):
+    for columna, (nombre, codigo) in zip(columnas, sombras):
         with columna:
             st.markdown(
                 f"""
@@ -120,7 +143,7 @@ if foto is not None:
                     background-color: {codigo};
                     height: 85px;
                     border-radius: 12px;
-                    border: 1px solid #D8C7B2;
+                    border: 1px solid #BDA989;
                 "></div>
                 """,
                 unsafe_allow_html=True
@@ -128,23 +151,29 @@ if foto is not None:
             st.caption(nombre)
             st.caption(codigo)
 
+    st.markdown("### 💡 Consejo de maquillaje")
+
     if estilo == "Natural":
         st.info(
-            "Consejo: probá tonos suaves para un resultado natural."
+            "Elegí tonos suaves para conseguir "
+            "un maquillaje delicado y natural."
         )
     elif estilo == "Brillante":
         st.info(
-            "Consejo: usá champagne y dorado para dar luminosidad."
+            "Probá los tonos champagne y dorado "
+            "para lograr un maquillaje luminoso."
         )
     else:
         st.info(
-            "Consejo: combiná bronce y marrón para un look intenso."
+            "Combiná los tonos bronce y marrón "
+            "para conseguir un maquillaje intenso."
         )
+
 else:
     st.info(
-        "Para comenzar, subí una foto de tu outfit "
+        "Para comenzar, subí una foto de tu ropa "
         "y elegí tu estilo de maquillaje."
     )
 
 st.markdown("---")
-st.caption("CHROMA · Your outfit, your colors ✨")
+st.caption("CHROMA · Encontrá los colores que van con vos ✨")
